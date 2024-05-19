@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Calculadora de Salário</title>
+</head>
+<body>
+    <div class="conteudo">
+        <h1>Calculadora de Salário</h1>
+
+        <div class="div-form">
+            <form id="salarioForm">
+
+                <div class="item-form">
+                    <label for="venda" class="titulo-item">Total vendido no mês:</label>
+                    <input type="number" id="venda" name="venda" required>
+                </div>
+
+                <div class="item-form" >
+                    <label for="meta" class="titulo-item">Meta do mês:</label>
+                    <input type="number" id="meta" name="meta" required>
+                </div>
+                
+                <div class="item-form">
+                    <label for="dias_trabalhados" class="titulo-item">Dias trabalhados no mês:</label>
+                    <input type="number" id="dias_trabalhados" name="dias_trabalhados" required>
+                </div>
+                
+                <div class="item-form" >
+                    <label for="folgas" class="titulo-item">Folgas no mês:</label>
+                    <input type="number" id="folgas" name="folgas" required>
+                </div>
+                
+                <input type="submit" value="Calcular" class="botao">
+            </form>
+        </div>
+
+        <div id="resultado">
+            <h2>Resultado do cálculo</h2>
+            <p>Comissão: R$ <span id="comissao"></span></p>
+            <p>DSR: R$ <span id="dsr"></span></p>
+            <p>Salário bruto: R$ <span id="proventos"></span></p>
+            <p>INSS: R$ <span id="inss"></span></p>
+            <p>IRRF: R$ <span id="irrf"></span></p>
+            <p>Descontos totais: R$ <span id="descontos"></span></p>
+            <p>Salário: R$ <span id="salario"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function calcularComissao(venda, meta) {
+            let tx = 0;
+            const sm = meta + (meta * 0.20);
+        
+            if (venda < meta) {
+                tx = 0.0333;
+            } else if (venda < sm) {
+                tx = 0.0375;
+            } else {
+                tx = 0.0416;
+            }
+        
+            const comissao = venda * tx;
+            return comissao;
+        }
+        
+        function calcularINSS(proventos) {
+            let inss = 0;
+            
+            if (proventos <= 1412.00) {
+                inss = proventos * 0.075;
+            } else if (proventos <= 2666.68) {
+                inss = (proventos * 0.09) - 21.18;
+            } else if (proventos <= 4000.03) {
+                inss = (proventos * 0.12) - 101.18;
+            } else {
+                inss = (proventos * 0.14) - 181.18;
+            }
+        
+            return inss;
+        }
+        
+        function calcularIRRF(proventos) {
+            let irrf = 0;
+            
+            if (proventos <= 2259.20) {
+                irrf = 0;
+            } else if (proventos <= 2826.65) {
+                irrf = (proventos * 0.075) - 169.44;
+            } else if (proventos <= 3751.05) {
+                irrf = (proventos * 0.15) - 381.44;
+            } else if (proventos <= 4664.68) {
+                irrf = (proventos * 0.225) - 662.77;
+            } else {
+                irrf = (proventos * 0.275) - 896.00;
+            }
+        
+            return irrf;
+        }
+        
+        function calcularSalario(venda, meta, dias_trabalhados, folgas) {
+            const comissao = calcularComissao(venda, meta);
+            const dsr = (comissao / dias_trabalhados) * folgas;
+            const proventos = comissao + dsr;
+            
+            const inss = calcularINSS(proventos);
+            const irrf = calcularIRRF(proventos);
+            const descontos = inss + irrf;
+            
+            const salario = proventos - descontos;
+
+            document.getElementById('comissao').textContent = comissao.toFixed(2);
+            document.getElementById('dsr').textContent = dsr.toFixed(2);
+            document.getElementById('proventos').textContent = proventos.toFixed(2);
+            document.getElementById('inss').textContent = inss.toFixed(2);
+            document.getElementById('irrf').textContent = irrf.toFixed(2);
+            document.getElementById('descontos').textContent = descontos.toFixed(2);
+            document.getElementById('salario').textContent = salario.toFixed(2);
+
+            document.getElementById('resultado').style.display = 'block';
+        }
+
+        document.getElementById('salarioForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const venda = parseFloat(document.getElementById('venda').value);
+            const meta = parseFloat(document.getElementById('meta').value);
+            const dias_trabalhados = parseInt(document.getElementById('dias_trabalhados').value);
+            const folgas = parseInt(document.getElementById('folgas').value);
+            
+            calcularSalario(venda, meta, dias_trabalhados, folgas);
+        });
+    </script>
+</body>
+</html>

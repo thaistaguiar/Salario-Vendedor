@@ -24,6 +24,6 @@ DSR (Descanso Semanal Remunerado) = (comissao/dias trabalhados) * numero de folg
 
 Os cálculos do INSS e IRRF foram retirados do site oficial do governo no **ano de 2024**.
 
-Realizei esse programa utilizando a linguagem Python e depois, com a ajuda do meu amigo [Artur Neppel](https://github.com/arturneppel), traduzi para JavaScript e criei um site simples para que o programa rodasse.
+Realizei esse programa utilizando a linguagem Python e depois, com a ajuda do meu amigo [Artur Neppel](https://github.com/arturneppel), traduzimos para JavaScript e criamos uma página na web simples para que o programa rodasse.
 
 Confira o resultado do site [aqui!](https://thaistaguiar.github.io/Salario-Vendedor/)
